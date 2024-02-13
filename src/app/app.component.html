@@ -1,5 +1,5 @@
-<div>
-    <div class="flex flex-row w-full bg-gradient-to-r from-green-300 to-green-800">
+<div class="h-full">
+    <div class="flex flex-row w-full h-28 bg-gradient-to-r from-green-300 to-green-800">
         <span class="text-8xl text-white p-2">$</span>
         <span class="text-white text-5xl w-full p-2 mt-4">Cotação Dólar</span>
 
@@ -12,28 +12,42 @@
 
             <div class="border-2 p-2 flex flex-row flex-grow-0 items-center">
                 <span class="text-lg text-red-200">Venda:</span>
-                <span class="pl-2 text-3xl font-medium text-white">{{'$ ' + (cotacaoAtual.preco_venda ? cotacaoAtual.preco_venda : "00.00" )}}</span>
+                <span class="pl-2 text-3xl font-medium text-white">{{'$ ' + (cotacaoAtual.preco_venda ?
+                    cotacaoAtual.preco_venda : "00.00" )}}</span>
             </div>
         </div>
-     </div>
-     <span class="min-h-1px bg-gray-500 w-full block "></span>
-
-    <div class="buscarPorPeriodo">
-        Histórico de cotações
-        <label class="mr-3" for="dataInicial">Data inicial:</label>
-        <input id="dataInicial" type="date" name="dataInicial" #dataInicial>
-        <label class="mr-3" for="dataFinal">Data final:</label>
-        <input id="dataFinal" type="date" name="dataFinal" #dataFinal>
-        <button mat-raised-button color="primary" type="submit" class="btnPesquisar"
-            (click)="getCotacaoPorPeriodo(dataInicial.value, dataFinal.value)"> Pesquisar </button>
     </div>
+    <span class="min-h-1px bg-gray-500 w-full block "></span>
 
-    <div class="mt-3">
-        <ul *ngFor="let item of cotacaoPorPeriodoLista">
-            <li class="listaHistoricoCotacoesItem">
-                <span class="historicoDeCotacoesItemInfo"> {{item.data}}-{{item.hora}} </span>
-                <span class="historicoDeCotacoesItemInfo"> {{item.preco_compra}} </span>
-            </li>
-        </ul>
-    </div>
+    <mat-drawer-container class="min-h-sideNav">
+        <mat-drawer mode="side" class="min-w-350px" opened>
+            <div class="flex flex-col p-4 items-center">
+                <span class="text-lg">Cotações por Período</span>
+                <label class="mr-3" for="dataInicial">Data inicial:</label>
+                <input id="dataInicial" type="date" name="dataInicial" #dataInicial>
+                <label class="mr-3" for="dataFinal">Data final:</label>
+                <input id="dataFinal" type="date" name="dataFinal" #dataFinal>
+                <button mat-raised-button color="primary" type="submit" class="btnPesquisar"
+                    (click)="getCotacaoPorPeriodo(dataInicial.value, dataFinal.value)"> Pesquisar </button>
+            </div>
+
+
+        </mat-drawer>
+        <mat-drawer-content>
+
+            <div class="mt-3">
+                <ul *ngFor="let item of cotacaoPorPeriodoLista">
+                    <li class="listaHistoricoCotacoesItem">
+                        <span class="historicoDeCotacoesItemInfo"> {{item.data}}-{{item.hora}} </span>
+                        <span class="historicoDeCotacoesItemInfo"> {{item.preco_compra}} </span>
+                    </li>
+                </ul>
+            </div>
+        </mat-drawer-content>
+    </mat-drawer-container>
+
+
+
+
+
 </div>

@@ -8,6 +8,10 @@ module.exports = {
       extend: {
         minHeight: {
             '1px': '1px',
+            'sideNav': 'calc(100vh - 112px)'
+        },
+        minWidth: {
+            '350px': '350px'
         }
       },
     },
