@@ -5,7 +5,11 @@ module.exports = {
       ],
     darkMode: false, // or 'media' or 'class'
     theme: {
-      extend: {},
+      extend: {
+        minHeight: {
+            '1px': '1px',
+        }
+      },
     },
     variants: {},
     plugins: [],

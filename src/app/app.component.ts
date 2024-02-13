@@ -9,7 +9,7 @@ import { CotacaoDolarService } from './cotacaodolar.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  cotacaoAtual = 0;
+  cotacaoAtual: Cotacao = new Cotacao(0,0,"","");
   cotacaoPorPeriodoLista: Cotacao[] = [];
 
   constructor(
