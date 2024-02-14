@@ -1,8 +1,12 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Cotacao } from './cotacao';
 import { CotacaoDolarService } from './cotacaodolar.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+
 
 @Component({
     selector: 'app-root',
@@ -17,28 +21,35 @@ export class AppComponent implements OnInit {
     maxDateInicio: Date = new Date();
     maxDateFinal: Date = new Date();
 
-
     periodoForm = new FormGroup({
         inicioPeriodo: new FormControl(null, Validators.required),
         finalPeriodo: new FormControl(null, Validators.required)
     });
 
+    displayedColumns: string[] = ['data', 'hora', 'preco_compra', 'preco_venda', 'diferenca_compra', 'diferenca_venda'];
+    dataSource: MatTableDataSource<Cotacao> = new MatTableDataSource<Cotacao>([]);
+
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
+    @ViewChild(MatSort) sort!: MatSort;
+
     constructor(
         private cotacaoDolarService: CotacaoDolarService,
         private dateFormat: DatePipe
-    ) { }
+    ) {
+
+    }
 
     public getCotacaoPorPeriodo(): void {
         let dataInicialString = this.periodoForm.value.inicioPeriodo;
         let dataFinalString = this.periodoForm.value.finalPeriodo;
 
-        this.cotacaoPorPeriodoLista = [];
-
         const dataInicial = this.dateFormat.transform(dataInicialString, "MM-dd-yyyy") || '';
         const dataFinal = this.dateFormat.transform(dataFinalString, "MM-dd-yyyy") || '';
 
         this.cotacaoDolarService.getCotacaoPorPeriodoFront(dataInicial, dataFinal).subscribe(cotacoes => {
-            this.cotacaoPorPeriodoLista = cotacoes;
+            this.dataSource = new MatTableDataSource(cotacoes);
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
         })
     }
 
@@ -63,4 +74,21 @@ export class AppComponent implements OnInit {
         this.getCotacaoPorPeriodo();
     }
 
+    ngAfterViewInit() {
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }
+
+    applyFilter(event: Event) {
+        const filterValue = (event.target as HTMLInputElement).value;
+        this.dataSource.filter = filterValue.trim().toLowerCase();
+
+        if (this.dataSource.paginator) {
+            this.dataSource.paginator.firstPage();
+        }
+    }
+
+    getDiferencaAbsoluta(preco_compra: number = 0, cotacaoAtual: number = 0): string {
+        return Math.abs(preco_compra - cotacaoAtual).toFixed(4);
+    }
 }
