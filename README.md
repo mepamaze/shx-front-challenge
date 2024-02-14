@@ -2,6 +2,9 @@
 
 ### The project's focus is to obtain information about the current dollar exchange rate.
 
+## Screenshot
+![Screenshot](./preview/screenshot.png)
+
 ## Dependencies
 - Node 12.14.1
 - Angular 12.2.x
