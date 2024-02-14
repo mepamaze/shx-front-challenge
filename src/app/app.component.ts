@@ -23,7 +23,8 @@ export class AppComponent implements OnInit {
 
     periodoForm = new FormGroup({
         inicioPeriodo: new FormControl(null, Validators.required),
-        finalPeriodo: new FormControl(null, Validators.required)
+        finalPeriodo: new FormControl(null, Validators.required),
+        cotacoesMenores: new FormControl(false)
     });
 
     displayedColumns: string[] = ['data', 'hora', 'preco_compra', 'preco_venda', 'diferenca_compra', 'diferenca_venda'];
@@ -46,11 +47,19 @@ export class AppComponent implements OnInit {
         const dataInicial = this.dateFormat.transform(dataInicialString, "MM-dd-yyyy") || '';
         const dataFinal = this.dateFormat.transform(dataFinalString, "MM-dd-yyyy") || '';
 
-        this.cotacaoDolarService.getCotacaoPorPeriodoFront(dataInicial, dataFinal).subscribe(cotacoes => {
-            this.dataSource = new MatTableDataSource(cotacoes);
-            this.dataSource.paginator = this.paginator;
-            this.dataSource.sort = this.sort;
-        })
+        if (this.periodoForm.value.cotacoesMenores) {
+            this.cotacaoDolarService.getCotacoesMenores(dataInicial, dataFinal).subscribe(cotacoes => {
+                this.dataSource = new MatTableDataSource(cotacoes);
+                this.dataSource.paginator = this.paginator;
+                this.dataSource.sort = this.sort;
+            })
+        } else {
+            this.cotacaoDolarService.getCotacaoPorPeriodoFront(dataInicial, dataFinal).subscribe(cotacoes => {
+                this.dataSource = new MatTableDataSource(cotacoes);
+                this.dataSource.paginator = this.paginator;
+                this.dataSource.sort = this.sort;
+            })
+        }
     }
 
     ngOnInit() {
@@ -77,7 +86,7 @@ export class AppComponent implements OnInit {
     ngAfterViewInit() {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-      }
+    }
 
     applyFilter(event: Event) {
         const filterValue = (event.target as HTMLInputElement).value;

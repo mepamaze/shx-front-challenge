@@ -1,4 +1,4 @@
-<div class="h-full">
+<div class="h-full overflow-hidden">
     <div class="flex flex-row w-full h-28 bg-gradient-to-r from-green-300 to-green-800">
         <span class="text-8xl text-white p-2">$</span>
         <span class="text-white text-5xl w-full p-2 mt-4">Cotação Dólar</span>
@@ -41,6 +41,8 @@
                         <mat-datepicker-toggle matSuffix [for]="picker_dialog2"></mat-datepicker-toggle>
                         <mat-datepicker #picker_dialog2></mat-datepicker>
                     </mat-form-field>
+
+                    <mat-slide-toggle formControlName="cotacoesMenores" class="mb-4 mt-3">Apenas menores que o preço de compra atual</mat-slide-toggle>
 
                     <button [disabled]="!periodoForm.valid" mat-raised-button color="primary" type="submit"
                         class="btnPesquisar"> Pesquisar </button>
