@@ -16,6 +16,7 @@ import { MatSort } from '@angular/material/sort';
 export class AppComponent implements OnInit {
     cotacaoAtual: Cotacao = new Cotacao(0, 0, "", "");
     cotacaoPorPeriodoLista: Cotacao[] = [];
+    maiorCotacao: Cotacao = new Cotacao(0,0,"","");
 
     minDate: Date = new Date(1984, 0, 1);
     maxDateInicio: Date = new Date();
@@ -60,12 +61,18 @@ export class AppComponent implements OnInit {
                 this.dataSource.sort = this.sort;
             })
         }
+
+        this.cotacaoDolarService.getCotacaoMaiorFront(dataInicial, dataFinal).subscribe( cotacao => {
+            this.maiorCotacao = cotacao;
+        })
     }
 
     ngOnInit() {
         this.cotacaoDolarService.getCotacaoAtual().subscribe(cotacao => {
             this.cotacaoAtual = cotacao;
         })
+        
+
 
         this.periodoForm.get('finalPeriodo')?.valueChanges.subscribe((value: Date) => {
             this.maxDateInicio = value;

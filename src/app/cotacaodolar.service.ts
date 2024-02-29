@@ -20,6 +20,13 @@ export class CotacaoDolarService {
     return this.http.get<Cotacao[]>(`${this.apiServerUrl}/moeda/${dataInicial}&${dataFinal}`);
   }
 
+  public getCotacaoMaiorFront(
+    dataInicial: string,
+    dataFinal: string
+  ): Observable<Cotacao> {
+    return this.http.get<Cotacao>(`${this.apiServerUrl}/moeda/cotacao-maior/${dataInicial}&${dataFinal}`);
+  }
+
   public getCotacoesMenores(
     dataInicial: string,
     dataFinal: string
